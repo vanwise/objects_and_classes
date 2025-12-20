@@ -3,7 +3,7 @@ object WallService {
     private var posts = emptyArray<Post>()
 
     fun add(post: Post): Post {
-        posts += post.copy(id = nextPostId++)
+        posts += post.copy(id = ++nextPostId)
         return posts.last()
     }
 
@@ -15,5 +15,10 @@ object WallService {
             }
         }
         return false
+    }
+
+    fun clear() {
+        posts = emptyArray()
+        nextPostId = 0
     }
 }
