@@ -1,6 +1,4 @@
-data class Likes(
-    val count: Int,
-    val userLikes: Boolean,
-    val canLike: Boolean,
-    val canPublish: Boolean
+abstract class Likes(
+    open val count: Int,
+    open val userLikes: Boolean,
 )
