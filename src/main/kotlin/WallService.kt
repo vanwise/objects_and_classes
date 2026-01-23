@@ -1,6 +1,19 @@
+import errors.PostNotFoundException
+
 object WallService {
     private var nextPostId = 0
     private var posts = emptyArray<Post>()
+    private var comments = emptyArray<Comment>()
+
+    fun createComment(postId: Int, comment: Comment): Comment {
+        for (post in posts) {
+            if (post.id == postId) {
+                comments += comment
+                return comments.last()
+            }
+        }
+        throw PostNotFoundException("Пост с id $postId не найден")
+    }
 
     fun add(post: Post): Post {
         posts += post.copy(id = ++nextPostId)
