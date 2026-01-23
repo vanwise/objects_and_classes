@@ -1,3 +1,4 @@
+import errors.PostNotFoundException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,10 +21,32 @@ class WallServiceTest {
             canPublish = true
         ),
     )
+    private val comment = Comment(
+        id = 1,
+        postId = post.id,
+        date = 1769175993,
+        text = "Самый лучший коммент!",
+        replyToUser = 2,
+        replyToComment = 3
+    )
 
     @BeforeEach
     fun clearBeforeTest() {
         WallService.clear()
+    }
+
+    @Test
+    fun createCommentShouldValidCreatedComment() {
+        val addedPost = WallService.add(post)
+        val createdComment = WallService.createComment(addedPost.id, comment)
+        assertEquals(comment, createdComment)
+    }
+
+    @Test
+    fun createCommentShouldThrowExceptionForNonexistentPost() {
+        assertThrows(PostNotFoundException::class.java) {
+            WallService.createComment(comment.postId, comment)
+        }
     }
 
     @Test
