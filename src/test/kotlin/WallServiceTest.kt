@@ -1,3 +1,5 @@
+import errors.CommentNotFoundException
+import errors.CommentReasonNotFoundException
 import errors.PostNotFoundException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -33,6 +35,27 @@ class WallServiceTest {
     @BeforeEach
     fun clearBeforeTest() {
         WallService.clear()
+    }
+
+    @Test
+    fun reportCommentShouldValidReportedComment() {
+        val addedPost = WallService.add(post)
+        val createdComment = WallService.createComment(addedPost.id, comment)
+        assertTrue(WallService.reportComment(createdComment.id, 2))
+    }
+
+    @Test
+    fun reportCommentShouldThrowExceptionForNonexistentReason() {
+        assertThrows(CommentReasonNotFoundException::class.java) {
+            WallService.reportComment(comment.id, 9)
+        }
+    }
+
+    @Test
+    fun reportCommentShouldThrowExceptionForNonexistentComment() {
+        assertThrows(CommentNotFoundException::class.java) {
+            WallService.reportComment(comment.id, 1)
+        }
     }
 
     @Test
